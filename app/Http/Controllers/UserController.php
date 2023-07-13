@@ -22,7 +22,7 @@ class UserController extends Controller
     public function Register(Request $request){
 
         $validation = Validator::make($request->all(),[
-            'usuario' => 'required|max:20',
+            'email' => 'required|email|unique:users',
             'rol'=> 'required',
             'nombre'=>'required|max:50',
             'apellido'=>'required|max:50',
@@ -43,6 +43,7 @@ class UserController extends Controller
 
     private function createUser($request){
         $user = new User();
+        $user -> email = $request -> post("email");
         $user -> password = Hash::make($request -> post("password"));   
         $user -> save();
         return $user;
@@ -63,7 +64,6 @@ class UserController extends Controller
         $persona = new Persona();
         $persona -> nombre= $request ->post('nombre');
         $persona -> apellido= $request ->post('apellido');
-        $persona -> usuario= $request ->post('usuario'); 
         $persona -> id= $id;
         $persona -> save();
 

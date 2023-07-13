@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Persona;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,9 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(1)->create([
-            "name" => "usuario",
-            "email" => "usuario@usuario"
+        User::factory(10)->create();
+       
+        for($i = 1; $i <= 10; $i++){
+        Persona::factory()->create([
+            "id" => $i,
+            "nombre" => "elpepe",
+            "apellido" => "etesech"
         ]);
+        }
+        
     }
+
 }
