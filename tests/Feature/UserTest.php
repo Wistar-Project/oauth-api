@@ -26,13 +26,13 @@ class UserTest extends TestCase
             '--name'=>'Test Client',
         ]);        
             
-        $client = Client::findOrFail(2);
+        $client = Client::findOrFail(1);
 
         $response = $this->post('/oauth/token',[
             "username" => "usuario@usuario",
             "password" => "1234",
             "grant_type" => "password",
-            "client_id" => "2",
+            "client_id" => "1",
             "client_secret" => $client -> secret
         ]);
 
@@ -85,17 +85,17 @@ class UserTest extends TestCase
 
     public function test_ValidarTokenConTokenValido()
     {
-        $client = Client::findOrFail(2);
+        $client = Client::findOrFail(1);
         $tokenResponse = $this -> post("/oauth/token",[
             "username" => "usuario@usuario",
             "password" => "1234",
             "grant_type" => "password",
-            "client_id" => "2",
+            "client_id" => "1",
             "client_secret" => $client -> secret
         ]);
 
         $token = json_decode($tokenResponse -> content(),true);
-        
+
         $response = $this->get('/api/v1/validate',
             [ "Authorization" => "Bearer " . $token ['access_token']]
         );
@@ -123,12 +123,12 @@ class UserTest extends TestCase
 
     public function test_LogoutConTokenValido()
     {
-        $client = Client::findOrFail(2);
+        $client = Client::findOrFail(1);
         $tokenResponse = $this -> post("/oauth/token",[
             "username" => "usuario@usuario",
             "password" => "1234",
             "grant_type" => "password",
-            "client_id" => "2",
+            "client_id" => "1",
             "client_secret" => $client -> secret
         ]);
 
