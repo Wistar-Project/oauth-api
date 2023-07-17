@@ -29,9 +29,12 @@ class UserController extends Controller
             'password' => 'required|confirmed'
         ]);
 
-        if($validation->fails())
-            return $validation->errors();
-
+        if($validation->fails()){
+            $BAD_REQUEST_HTTP=400;
+            abort($BAD_REQUEST_HTTP, $validation->errors());
+        }
+            
+        
         DB::transaction(function() use($request){
             $usuario= $this -> createUser($request);
             $this ->createPersona($request,$usuario->id);
