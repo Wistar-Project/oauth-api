@@ -25,7 +25,9 @@ class DatabaseSeeder extends Seeder
             "password" => Hash::make("1234")
         ]);
         Persona::factory() -> create([
-            "id" => $usuarioTesting -> id
+            "id" => $usuarioTesting -> id,
+            "nombre" => "pepe",
+            "apellido" => "hola"
         ]);
         Administrador::factory() -> create([
             "id" => $usuarioTesting -> id
