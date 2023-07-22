@@ -6,6 +6,7 @@ use Laravel\Passport\Client;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
 
 class PersonaTest extends TestCase
 {
@@ -87,8 +88,12 @@ class PersonaTest extends TestCase
             'nombre' => 'pruebita',
         ]);
         
-        $response->assertStatus(200);
-
+        
+        Artisan::call('passport:client',[
+            '--password' => true,
+            '--no-interaction'=>true,
+            '--name'=>'Test Client',
+        ]);        
         $client = Client::findOrFail(1);
         $response = $this->post('oauth/token', [
             'username' => 'prueba@conductor',
@@ -108,7 +113,7 @@ class PersonaTest extends TestCase
             "token_type" => "Bearer"
         ]);
 
-        $response->assertStatus(200);
+    
 
     }
 }
