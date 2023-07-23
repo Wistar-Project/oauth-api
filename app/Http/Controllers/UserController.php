@@ -19,29 +19,27 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function Register(Request $request){
-
-        $validation = Validator::make($request->all(),[
+    private function validarDatos($request){
+        return Validator::make($request->all(),[
             'email' => 'required|email|unique:users',
             'rol'=> 'required',
             'nombre'=>'required|max:50',
             'apellido'=>'required|max:50',
             'password' => 'required|confirmed'
         ]);
-
-        if($validation->fails()){
-            $BAD_REQUEST_HTTP=400;
-            abort($BAD_REQUEST_HTTP, $validation->errors());
-        }
-            
         
+    }
+    public function Register(Request $request){
+        $validacion = $this -> validarDatos($request); 
+        if($validacion->fails()){
+            $BAD_REQUEST_HTTP=400;
+            abort($BAD_REQUEST_HTTP, $validacion->errors());
+        }
         DB::transaction(function() use($request){
             $usuario= $this -> createUser($request);
             $this ->createPersona($request,$usuario->id);
             $this ->addRoleToPersona($usuario ->id,$request->rol);
         });
-       
-        
     }
 
     private function createUser($request){
@@ -52,15 +50,13 @@ class UserController extends Controller
         return $user;
     }
 
-    public function ValidateToken(Request $request){
+    public function ValidateToken(){
         return auth('api')->user();
     }
 
     public function Logout(Request $request){
         $request->user()->token()->revoke();
         return ['message' => 'Token Revoked'];
-        
-        
     }
 
     private function createPersona($request ,$id){
@@ -69,47 +65,33 @@ class UserController extends Controller
         $persona -> apellido= $request ->post('apellido');
         $persona -> id= $id;
         $persona -> save();
-
-        return $persona;
     }
     
     private function createConductor($id){
         $conductor = new Conductor();
         $conductor -> id= $id;
         $conductor-> save();
-
-        return $conductor;
     }
     
     private function createAdministrador($id){
         $administrador = new Administrador();
         $administrador -> id= $id;
         $administrador-> save();
-
-        return $administrador;
     }
   
     private function createFuncionario($id){
         $funcionario = new Funcionario();
         $funcionario -> id= $id;
         $funcionario-> save();
-
-        return $funcionario;
     }
     private function addRoleToPersona($id,$rol){
         $BAD_REQUEST_HTTP=400;
-        if($rol == 'administrador'){
-            $this -> createAdministrador($id);
-            return;
-        }
-        if($rol == 'conductor'){
-            $this -> createConductor($id);
-            return;
-        }
-        if($rol == 'funcionario'){
-            $this -> createFuncionario($id);
-            return;
-        }
+        if($rol == 'administrador')
+            return $this -> createAdministrador($id);
+        if($rol == 'conductor')
+            return $this -> createConductor($id);
+        if($rol == 'funcionario')
+            return $this -> createFuncionario($id);
         abort($BAD_REQUEST_HTTP,"El rol especificado no es valido");
     }
 }
