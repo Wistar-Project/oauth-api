@@ -14,8 +14,13 @@ class Cors
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle($request, Closure $next){
+        $origin = $request->headers->get('origin');
+        $ALLOWED_ORIGINS = ["http://localhost:5500", "http://127.0.0.1:5500"];
+        if(!in_array($origin, $ALLOWED_ORIGINS)){
+            $origin = "";
+        }
         return $next($request)
-            -> header('Access-Control-Allow-Origin', 'http://localhost:5500')
+            -> header('Access-Control-Allow-Origin', $origin)
             -> header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             -> header('Access-Control-Allow-Headers', 'Content-Type')
             -> header('Access-Control-Allow-Credentials', true);

@@ -94,4 +94,9 @@ class UserController extends Controller
             return $this -> createFuncionario($id);
         abort($BAD_REQUEST_HTTP,"El rol especificado no es valido");
     }
+
+    public function MostrarPersona(){
+        $user = auth('api') -> user();
+        return Persona::find($user -> id);
+    }
 }
