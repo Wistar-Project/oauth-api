@@ -90,7 +90,6 @@ class UserController extends Controller
     }
 
     public function MostrarPersona(){
-        $user = auth('api') -> user();
-        return Persona::find($user -> id);
+        return auth('api') -> user() -> persona;
     }
 }
