@@ -28,12 +28,13 @@ class UserController extends Controller
         $validacion = $this -> validarDatos($request); 
         if($validacion -> fails()){
             $BAD_REQUEST_HTTP=400;
-            abort($BAD_REQUEST_HTTP, $validacion->errors());
+            abort($BAD_REQUEST_HTTP, $validacion -> errors());
         }
-        DB::transaction(function() use($request){
+        return DB::transaction(function() use($request){
             $usuario = $this -> createUser($request);
-            $this -> createPersona($request,$usuario->id);
-            $this -> addRoleToPersona($usuario ->id,$request->rol);
+            $persona = $this -> createPersona($request, $usuario -> id);
+            $this -> addRoleToPersona($usuario -> id, $request -> post('rol'));
+            return $persona;
         });
     }
 
@@ -46,7 +47,7 @@ class UserController extends Controller
     }
 
     public function ValidateToken(){
-        return auth('api')->user();
+        return auth('api') -> user();
     }
 
     public function Logout(Request $request){
@@ -54,32 +55,33 @@ class UserController extends Controller
         return ['message' => 'Token Revoked'];
     }
 
-    private function createPersona($request ,$id){
+    private function createPersona($request, $id){
         $persona = new Persona();
         $persona -> nombre = $request -> post('nombre');
         $persona -> apellido = $request -> post('apellido');
         $persona -> id = $id;
         $persona -> save();
+        return $persona;
     }
     
     private function createConductor($id){
         $conductor = new Conductor();
         $conductor -> id = $id;
-        $conductor-> save();
+        $conductor -> save();
     }
     
     private function createAdministrador($id){
         $administrador = new Administrador();
         $administrador -> id = $id;
-        $administrador-> save();
+        $administrador -> save();
     }
   
     private function createFuncionario($id){
         $funcionario = new Funcionario();
         $funcionario -> id = $id;
-        $funcionario-> save();
+        $funcionario -> save();
     }
-    private function addRoleToPersona($id,$rol){
+    private function addRoleToPersona($id, $rol){
         if($rol == 'administrador')
             return $this -> createAdministrador($id);
         if($rol == 'conductor')
