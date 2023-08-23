@@ -20,5 +20,5 @@ Route::prefix('v1')->group(function ()
 {
     Route::get('/validate',[UserController::class,"ValidateToken"]) -> middleware('auth:api');
     Route::get('/logout',[UserController::class,"Logout"]) -> middleware('auth:api');
-    Route::get('/persona', [ UserController::class, "MostrarPersona" ]) -> middleware('auth:api');
+    Route::get('/nombre', [ UserController::class, "NombreCompleto" ]) -> middleware('auth:api');
 });

@@ -15,7 +15,9 @@ class UserController extends Controller
         return ['message' => 'Sesión cerrada satisfactoriamente'];
     }
 
-    public function MostrarPersona(){
-        return auth('api') -> user() -> persona;
+    public function NombreCompleto(){
+        $persona = auth('api') -> user() -> persona;
+        $nombreCompleto = $persona -> nombre . " " . $persona -> apellido;
+        return $nombreCompleto;
     }
 }
