@@ -10,4 +10,8 @@ class Persona extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function rol(){
+        return $this -> hasOne(PersonaRol::class, "id");
+    }
 }
