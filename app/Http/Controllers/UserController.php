@@ -16,4 +16,8 @@ class UserController extends Controller
         $nombreCompleto = $persona -> nombre . " " . $persona -> apellido;
         return $nombreCompleto;
     }
+
+    public function Rol(){
+        return auth('api') -> user() -> persona -> rol -> rol;
+    }
 }
