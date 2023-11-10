@@ -20,4 +20,5 @@ Route::prefix('v1')->group(function ()
 {
     Route::get('/logout',[UserController::class,"Logout"]) -> middleware('auth:api');
     Route::get('/nombre', [ UserController::class, "NombreCompleto" ]) -> middleware('auth:api');
+    Route::get('/rol', [ UserController::class, "Rol" ]) -> middleware('auth:api');
 });
