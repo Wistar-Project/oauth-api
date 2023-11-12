@@ -41,9 +41,7 @@ jobs:
     - name: Create MySQL tables
       run: mysql -h 127.0.0.1 -u root -e "source tablas.sql" gotruck
     - name: Generate key
-      run: php artisan key:generate
-    - name: Create grant client
-      run: php artisan passport:client --password --no-interaction --name Test      
+      run: php artisan key:generate   
     - name: Run seeders
       run: php artisan db:seed
     - name: Create Unit folder for testing
