@@ -40,6 +40,8 @@ jobs:
       run: php artisan migrate
     - name: Install passport
       run: php artisan passport:install
+    - name: Generate passport keys
+      run: php artisan passport:keys
     - name: Create grant client
       run: php artisan passport:client --password --no-interaction --name Test
     - name: Create MySQL tables
