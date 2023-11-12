@@ -26,6 +26,12 @@ class UserTest extends TestCase
      */
     public function test_iniciar_sesion_con_client_valido()
     {
+        Artisan::call('passport:client',[
+            '--password' => true,
+            '--no-interaction'=>true,
+            '--name'=>'Test Client',
+        ]);        
+        $client = Client::all()->first();
         $usuarioTesting = User::factory() -> create([
             "email" => "persona@email.com",
             "password" => Hash::make("contra1234")
@@ -38,13 +44,6 @@ class UserTest extends TestCase
         Administrador::factory() -> create([
             "id" => $usuarioTesting -> id
         ]);
-
-        Artisan::call('passport:client',[
-            '--password' => true,
-            '--no-interaction'=>true,
-            '--name'=>'Test Client',
-        ]);        
-        $client = Client::all()->first();
 
         $response = $this->post('/oauth/token',[
             "username" => "persona@email.com",

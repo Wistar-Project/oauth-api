@@ -36,14 +36,12 @@ jobs:
       run: chmod -R 777 storage bootstrap/cache
     - name: Run migrations
       run: php artisan migrate
-    - name: Install passport
-      run: php artisan passport:install
-    - name: Create MySQL tables
-      run: mysql -h 127.0.0.1 -u root -e "source tablas.sql" gotruck
     - name: Generate key
       run: php artisan key:generate   
-    - name: Run seeders
-      run: php artisan db:seed
+    - name: Generate passport keys
+      run: php artisan passport:keys
+    - name: Create MySQL tables
+      run: mysql -h 127.0.0.1 -u root -e "source tablas.sql" gotruck
     - name: Create Unit folder for testing
       run: mkdir tests/Unit
     - name: Run tests
