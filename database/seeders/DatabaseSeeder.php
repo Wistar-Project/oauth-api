@@ -32,40 +32,5 @@ class DatabaseSeeder extends Seeder
         $gerente = new Gerente();
         $gerente -> id = $usuarioGerente -> id;
         $gerente -> save();
-        $usuarioTesting = User::factory() -> create([
-            "email" => "usuario@usuario",
-            "password" => Hash::make("1234")
-        ]);
-        Persona::factory() -> create([
-            "id" => $usuarioTesting -> id,
-            "nombre" => "pepe",
-            "apellido" => "hola"
-        ]);
-        Administrador::factory() -> create([
-            "id" => $usuarioTesting -> id
-        ]);
-
-        $usuarios = User::factory(30) -> create();
-        for($i = 0; $i < count($usuarios); $i++){
-            Persona::factory() -> create([
-                "id" => $usuarios[$i] -> id
-            ]);
-            if($i <= 9 ){
-                Funcionario::factory() -> create([
-                    "id" => $usuarios[$i] -> id
-                ]);
-                continue;
-            }
-            if($i <= 19 && $i >= 10 ){
-                Conductor::factory() -> create([
-                    "id" => $usuarios[$i] -> id
-                ]);
-                continue;
-             }
-            Administrador::factory() -> create([
-                "id" => $usuarios[$i] -> id
-            ]);
-        }
     }
-
 }
